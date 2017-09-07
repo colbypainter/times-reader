@@ -107,34 +107,39 @@ class Sections extends Component {
   render() {
     return(
       <Col md={2}>
-        <Nav bsStyle="pills" stacked activeKey={1}>
-          <NavItem eventKey={1} >Home</NavItem>
-          <NavItem eventKey={2} >Opinion</NavItem>
-          <NavItem eventKey={3} >World</NavItem>
-          <NavItem eventKey={4} >National</NavItem>
-          <NavItem eventKey={5} >Politics</NavItem>
-          <NavItem eventKey={6} >Upshot</NavItem>
-          <NavItem eventKey={7} >NY Region</NavItem>
-          <NavItem eventKey={8} >Business</NavItem>
-          <NavItem eventKey={9} >Technology</NavItem>
-          <NavItem eventKey={10} >Science</NavItem>
-          <NavItem eventKey={11} >Health</NavItem>
-          <NavItem eventKey={12} >Sports</NavItem>
-          <NavItem eventKey={13} >Arts</NavItem>
-          <NavItem eventKey={14} >Books</NavItem>
-          <NavItem eventKey={15} >Movies</NavItem>
-          <NavItem eventKey={16} >Theater</NavItem>
-          <NavItem eventKey={17} >Sunday Review</NavItem>
-          <NavItem eventKey={18} >Fashion</NavItem>
-          <NavItem eventKey={19} >T Magazine</NavItem>
-          <NavItem eventKey={20} >Food</NavItem>
-          <NavItem eventKey={21} >Travel</NavItem>
-          <NavItem eventKey={22} >Magazine</NavItem>
-          <NavItem eventKey={23} >Real Estate</NavItem>
-          <NavItem eventKey={24} >Automobiles</NavItem>
-          <NavItem eventKey={25} >Obituaries</NavItem>
-          <NavItem eventKey={26} >Insider</NavItem>
-        </Nav>
+        <FormGroup controlId="sectionSelectGroup">
+          <ControlLabel>Choose Section</ControlLabel>
+          <FormControl componentClass="select" placeholder="">
+            <option value="home" eventKey={1} >Home</option>
+            <option value="opinion" eventKey={2} >Opinion</option>
+            <option value="world" eventKey={3} >World</option>
+            <option value="national" eventKey={4} >National</option>
+            <option value="politics" eventKey={5} >Politics</option>
+            <option value="upshot" eventKey={6} >Upshot</option>
+            <option value="nyregion" eventKey={7} >NY Region</option>
+            <option value="business" eventKey={8} >Business</option>
+            <option value="technology" eventKey={9} >Technology</option>
+            <option value="science" eventKey={10} >Science</option>
+            <option value="health" eventKey={11} >Health</option>
+            <option value="sports" eventKey={12} >Sports</option>
+            <option value="arts" eventKey={13} >Arts</option>
+            <option value="books" eventKey={14} >Books</option>
+            <option value="movies" eventKey={15} >Movies</option>
+            <option value="theater" eventKey={16} >Theater</option>
+            <option value="sundayreview" eventKey={17} >Sunday Review</option>
+            <option value="fashion" eventKey={18} >Fashion</option>
+            <option value="tmagazine" eventKey={19} >T Magazine</option>
+            <option value="food" eventKey={20} >Food</option>
+            <option value="travel" eventKey={21} >Travel</option>
+            <option value="magazine" eventKey={22} >Magazine</option>
+            <option value="realestate" eventKey={23} >Real Estate</option>
+            <option value="automobiles" eventKey={24} >Automobiles</option>
+            <option value="obituaries" eventKey={25} >Obituaries</option>
+            <option value="insider" eventKey={26} >Insider</option>
+          </FormControl>
+        </FormGroup>
+
+
       </Col>
       );
   }
