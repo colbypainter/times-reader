@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import 'roboto-npm-webfont';
-import { Grid, Row, Col, Navbar, ListGroup, ListGroupItem, 
+import { Grid, Row, Col, Nav, NavItem, Navbar, ListGroup, ListGroupItem, 
         Button, Form, FormControl, FormGroup, ControlLabel, HelpBlock, 
         Alert, Table, Panel, Media, MediaLeft, MediaBody, MediaHeading } from 'react-bootstrap';
 
@@ -89,9 +89,7 @@ class App extends Component {
           <div className="header">
             <h2>NYT Web Reader</h2>
           </div>
-          <p className="App-intro">
-            Read the news...for yer health!
-          </p>
+          <Sections />
           <Results section={this.state.section} 
                     message={this.state.message}
                     results={this.state.results}
@@ -103,6 +101,43 @@ class App extends Component {
     );
   }
   
+}
+
+class Sections extends Component {
+  render() {
+    return(
+      <Col md={2}>
+        <Nav bsStyle="pills" stacked activeKey={1}>
+          <NavItem eventKey={1} >Home</NavItem>
+          <NavItem eventKey={2} >Opinion</NavItem>
+          <NavItem eventKey={3} >World</NavItem>
+          <NavItem eventKey={4} >National</NavItem>
+          <NavItem eventKey={5} >Politics</NavItem>
+          <NavItem eventKey={6} >Upshot</NavItem>
+          <NavItem eventKey={7} >NY Region</NavItem>
+          <NavItem eventKey={8} >Business</NavItem>
+          <NavItem eventKey={9} >Technology</NavItem>
+          <NavItem eventKey={10} >Science</NavItem>
+          <NavItem eventKey={11} >Health</NavItem>
+          <NavItem eventKey={12} >Sports</NavItem>
+          <NavItem eventKey={13} >Arts</NavItem>
+          <NavItem eventKey={14} >Books</NavItem>
+          <NavItem eventKey={15} >Movies</NavItem>
+          <NavItem eventKey={16} >Theater</NavItem>
+          <NavItem eventKey={17} >Sunday Review</NavItem>
+          <NavItem eventKey={18} >Fashion</NavItem>
+          <NavItem eventKey={19} >T Magazine</NavItem>
+          <NavItem eventKey={20} >Food</NavItem>
+          <NavItem eventKey={21} >Travel</NavItem>
+          <NavItem eventKey={22} >Magazine</NavItem>
+          <NavItem eventKey={23} >Real Estate</NavItem>
+          <NavItem eventKey={24} >Automobiles</NavItem>
+          <NavItem eventKey={25} >Obituaries</NavItem>
+          <NavItem eventKey={26} >Insider</NavItem>
+        </Nav>
+      </Col>
+      );
+  }
 }
 
 class Results extends Component {
@@ -142,9 +177,9 @@ class Results extends Component {
       );
     }
     return(
-      <div>
+      <Col md={8}>
         {storyCards}
-      </div>
+      </Col>
       );
   }
 }
