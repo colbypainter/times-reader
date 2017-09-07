@@ -3,7 +3,7 @@ import './App.css';
 import 'roboto-npm-webfont';
 import { Grid, Row, Col, Navbar, ListGroup, ListGroupItem, 
         Button, Form, FormControl, FormGroup, ControlLabel, HelpBlock, 
-        Alert, Table, Panel } from 'react-bootstrap';
+        Alert, Table, Panel, Media, MediaLeft, MediaBody, MediaHeading } from 'react-bootstrap';
 
 
 var request = require('request');
@@ -110,19 +110,41 @@ class Results extends Component {
   render() {
     var results = this.props.results;
     var storyCards = [];
-    for(var i=0; i < results.length; i++) {
+    // For now, cap the results at 10. Handle this differently to provide More Stories button
+    var maxStories = 10;
+    if (results.length < 10) {
+      maxStories = results.length;
+    }
+    for(var i=0; i < maxStories; i++) {
+      try {
+        var thumbnail = results[i].multimedia["1"].url;
+      } catch(e) {
+        console.log(e.message);
+        thumbnail = "";
+      }
       storyCards.push(
-        <ul>
-          <li><strong>{results[i].title}</strong></li>
-          <li>{results[i].url}</li>
-          <li>{results[i].byline}</li>
-          <li>{results[i].published_date}</li>
-          <li>{results[i].abstract}</li>
-        </ul>
+      
+      <Panel>
+        <Media>
+          <Media.Left>
+            <img width={150} height={150} src={thumbnail} alt="NYT"/>
+          </Media.Left>
+          <Media.Body>
+            <Media.Heading>{results[i].title}</Media.Heading>
+            <p>{results[i].url}</p>
+            <p>{results[i].byline}</p>
+            <p>{results[i].published_date}</p>
+            <p>{results[i].abstract}</p>
+          </Media.Body>
+        </Media>
+      </Panel>
+    
       );
     }
     return(
-        <div>{storyCards}</div>
+      <div>
+        {storyCards}
+      </div>
       );
   }
 }
