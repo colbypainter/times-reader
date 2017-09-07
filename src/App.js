@@ -25,6 +25,10 @@ class App extends Component {
     this.updateMessage = this.updateMessage.bind(this);
   }
   
+  componentDidMount() {
+    this.apiRequest();
+  }
+  
   changeSection(event) {
     var newSection = event.target.value;
     this.setState((state, props) => ({
@@ -52,7 +56,8 @@ class App extends Component {
             try {
               data = JSON.parse(body);
               console.log(data);
-              callback(data);
+              // Keep only the array of article results
+              callback(data.results);
             } catch(e) {
               console.log(e.message);
               callback(e.message);
@@ -62,6 +67,7 @@ class App extends Component {
     getRequest(myUrl, this.updateResults);
   }
   
+  // Not currently using this 
   updateMessage(msg) {
     var newMessage = msg;
     this.setState((state, props) => ({
@@ -101,13 +107,22 @@ class App extends Component {
 
 class Results extends Component {
   
-  componentDidMount() {
-    this.props.apiRequest();
-  }
-  
   render() {
+    var results = this.props.results;
+    var storyCards = [];
+    for(var i=0; i < results.length; i++) {
+      storyCards.push(
+        <ul>
+          <li><strong>{results[i].title}</strong></li>
+          <li>{results[i].url}</li>
+          <li>{results[i].byline}</li>
+          <li>{results[i].published_date}</li>
+          <li>{results[i].abstract}</li>
+        </ul>
+      );
+    }
     return(
-        <h3>Test</h3>
+        <div>{storyCards}</div>
       );
   }
 }
