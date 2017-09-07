@@ -31,9 +31,12 @@ class App extends Component {
   
   changeSection(event) {
     var newSection = event.target.value;
-    this.setState((state, props) => ({
+    this.setState({
       section: newSection
-    }));
+    }, function(){
+      console.log("test: " + this.state.section);
+      this.apiRequest();
+    });
   }
   
   apiRequest() {
@@ -89,7 +92,10 @@ class App extends Component {
           <div className="header">
             <h2>NYT Web Reader</h2>
           </div>
-          <Sections />
+          <Sections section={this.state.section} 
+                    results={this.state.results}
+                    changeSection={this.changeSection} 
+                    updateResults={this.updateResults}/>
           <Results section={this.state.section} 
                     message={this.state.message}
                     results={this.state.results}
@@ -109,7 +115,7 @@ class Sections extends Component {
       <Col md={2}>
         <FormGroup controlId="sectionSelectGroup">
           <ControlLabel>Choose Section</ControlLabel>
-          <FormControl componentClass="select" placeholder="">
+          <FormControl componentClass="select" onChange={this.props.changeSection}>
             <option value="home" eventKey={1} >Home</option>
             <option value="opinion" eventKey={2} >Opinion</option>
             <option value="world" eventKey={3} >World</option>
