@@ -16,13 +16,15 @@ class App extends Component {
     this.state = {
       section: "home",
       message: "",
-      results: []
+      results: [],
+      searchInput: ""
     };
 
     this.changeSection = this.changeSection.bind(this);
     this.apiRequest = this.apiRequest.bind(this);
     this.updateResults = this.updateResults.bind(this);
     this.updateMessage = this.updateMessage.bind(this);
+    this.updateSearchInput = this.updateSearchInput.bind(this);
   }
   
   componentDidMount() {
@@ -32,7 +34,8 @@ class App extends Component {
   changeSection(event) {
     var newSection = event.target.value;
     this.setState({
-      section: newSection
+      section: newSection,
+      searchInput: ""
     }, function(){
       console.log("test: " + this.state.section);
       this.apiRequest();
@@ -83,7 +86,13 @@ class App extends Component {
     this.setState((state, props) => ({
       results: newResults
     }));
-    console.log(this.state.results);
+  }
+  
+  updateSearchInput(event) {
+    var newSearchInput = event.target.value;
+    this.setState((state, props) => ({
+      searchInput: newSearchInput
+    }));
   }
   
   render() {
@@ -94,15 +103,27 @@ class App extends Component {
           </div>
           <Sections section={this.state.section} 
                     results={this.state.results}
+                    searchInput={this.state.searchInput} 
                     changeSection={this.changeSection} 
-                    updateResults={this.updateResults}/>
+                    updateResults={this.updateResults}
+                    updateSearchInput={this.updateSearchInput} />
+                    
+          <SearchInput section={this.state.section} 
+                      results={this.state.results}
+                      searchInput={this.state.searchInput} 
+                      changeSection={this.changeSection} 
+                      updateResults={this.updateResults}
+                      updateSearchInput={this.updateSearchInput} />
+                      
           <Results section={this.state.section} 
                     message={this.state.message}
                     results={this.state.results}
+                    searchInput={this.state.searchInput} 
                     apiRequest={this.apiRequest}
                     changeSection={this.changeSection}
                     updateMessage={this.updateMessage}
-                    updateResults={this.updateResults} />
+                    updateResults={this.updateResults}
+                    updateSearchInput={this.updateSearchInput} />
         </div>
     );
   }
@@ -151,21 +172,62 @@ class Sections extends Component {
   }
 }
 
+class SearchInput extends Component {
+  render() {
+    return(
+      <Col md={2}>
+        <ControlLabel>Search</ControlLabel>
+        <FormControl type="text" id="search_input" value={this.props.searchInput} results={this.props.results} 
+                                                        onChange={this.props.updateSearchInput} />
+      </Col>
+    );
+  }
+}
+
 class Results extends Component {
   
   render() {
-    var results = this.props.results;
+    // Get the results from the API call
+    var res = this.props.results;
+    // Create an empty array in case we filter via search. 
+    // Don't filter values out of res because it will alter state.results. 
+    // We want full state.results to remain for re-rendering for new search input without a new API call
+    var filteredRes = [];
+    // Force input to lower case
+    var searchInput = _.toLower(this.props.searchInput);
+    // If there's any search input, use it to filter
+    if (searchInput !== "") {
+      for(var i=0; i < res.length; i++) {
+        // Mash all the displayed attributes together into a string for comparison
+        var resultString = (res[i].title + res[i].byline + res[i].abstract);
+        resultString = _.toLower(resultString);
+        // See if input matches our big string
+        if(_.includes(resultString, searchInput)) {
+          // Add matches to our filter array
+          filteredRes.push(res[i]);
+        }
+      }
+    }
+    // Stories will hold either the unfiltered or filtered results
+    var stories;
+    // If we filtered at all, use that set of results. Otherwise use the full set.
+    if (filteredRes.length > 0) { 
+      stories = filteredRes;
+    } else { 
+      stories = res;
+    }
     var storyCards = [];
     // For now, cap the results at 10. Handle this differently to provide More Stories button
     var maxStories = 10;
-    if (results.length < 10) {
-      maxStories = results.length;
+    if (stories.length < 10) {
+      maxStories = stories.length;
     }
-    for(var i=0; i < maxStories; i++) {
+    for(var j=0; j < maxStories; j++) {
       try {
-        var thumbnail = results[i].multimedia["1"].url;
+        var thumbnail = stories[j].multimedia["1"].url;
       } catch(e) {
         console.log(e.message);
+        // TODO set a default thumbnail
         thumbnail = "";
       }
       storyCards.push(
@@ -176,11 +238,11 @@ class Results extends Component {
             <img width={150} height={150} src={thumbnail} alt="NYT"/>
           </Media.Left>
           <Media.Body>
-            <Media.Heading>{results[i].title}</Media.Heading>
-            <p>{results[i].url}</p>
-            <p>{results[i].byline}</p>
-            <p>{results[i].published_date}</p>
-            <p>{results[i].abstract}</p>
+            <Media.Heading>{stories[j].title}</Media.Heading>
+            <p>{stories[j].url}</p>
+            <p>{stories[j].byline}</p>
+            <p>{stories[j].published_date}</p>
+            <p>{stories[j].abstract}</p>
           </Media.Body>
         </Media>
       </Panel>
