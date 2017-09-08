@@ -62,7 +62,7 @@ class App extends Component {
             try {
               data = JSON.parse(body);
               console.log(data);
-              // Keep only the array of article results
+              // Keep only the array of article results, ignore the rest of the data
               callback(data.results);
             } catch(e) {
               console.log(e.message);
@@ -99,41 +99,64 @@ class App extends Component {
     return (
         <div className="App">
           <div className="header">
-            <h2>NYT Web Reader</h2>
+            <Header />
           </div>
-          <Sections section={this.state.section} 
-                    results={this.state.results}
-                    searchInput={this.state.searchInput} 
-                    changeSection={this.changeSection} 
-                    updateResults={this.updateResults}
-                    updateSearchInput={this.updateSearchInput} />
-                    
-          <SearchInput section={this.state.section} 
-                      results={this.state.results}
-                      searchInput={this.state.searchInput} 
-                      changeSection={this.changeSection} 
-                      updateResults={this.updateResults}
-                      updateSearchInput={this.updateSearchInput} />
-                      
-          <Results section={this.state.section} 
-                    message={this.state.message}
-                    results={this.state.results}
-                    searchInput={this.state.searchInput} 
-                    apiRequest={this.apiRequest}
-                    changeSection={this.changeSection}
-                    updateMessage={this.updateMessage}
-                    updateResults={this.updateResults}
-                    updateSearchInput={this.updateSearchInput} />
+          <div className="container">
+            <Row>
+              <Sections section={this.state.section} 
+                        results={this.state.results}
+                        searchInput={this.state.searchInput} 
+                        changeSection={this.changeSection} 
+                        updateResults={this.updateResults}
+                        updateSearchInput={this.updateSearchInput} />
+                        
+              <SearchInput section={this.state.section} 
+                          results={this.state.results}
+                          searchInput={this.state.searchInput} 
+                          changeSection={this.changeSection} 
+                          updateResults={this.updateResults}
+                          updateSearchInput={this.updateSearchInput} />
+            </Row>
+            <Row>
+              <Results section={this.state.section} 
+                        message={this.state.message}
+                        results={this.state.results}
+                        searchInput={this.state.searchInput} 
+                        apiRequest={this.apiRequest}
+                        changeSection={this.changeSection}
+                        updateMessage={this.updateMessage}
+                        updateResults={this.updateResults}
+                        updateSearchInput={this.updateSearchInput} />
+            </Row>
+          </div>
+          <div>
+            <Footer />
+          </div>
         </div>
     );
   }
   
 }
 
+class Header extends Component {
+  render() {
+    return(
+      <Navbar inverse staticTop>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <a href="https://github.com/colbypainter"><span id="header_link">NYT Web Reader</span></a>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+      </Navbar>
+      );
+  }
+}
+
 class Sections extends Component {
   render() {
     return(
-      <Col md={2}>
+      <Col md={6}>
         <FormGroup controlId="sectionSelectGroup">
           <ControlLabel>Choose Section</ControlLabel>
           <FormControl componentClass="select" onChange={this.props.changeSection}>
@@ -175,7 +198,7 @@ class Sections extends Component {
 class SearchInput extends Component {
   render() {
     return(
-      <Col md={2}>
+      <Col md={6}>
         <ControlLabel>Search</ControlLabel>
         <FormControl type="text" id="search_input" value={this.props.searchInput} results={this.props.results} 
                                                         onChange={this.props.updateSearchInput} />
@@ -224,6 +247,17 @@ class Results extends Component {
     }
     for(var j=0; j < maxStories; j++) {
       try {
+        var date = new Date(stories[j].published_date);
+        //date = Date.parse(date);
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var year = date.getFullYear();
+        
+        stories[j].published_date = (month + "/" + day + "/" + year);
+
+        //var time = date.toLocaleTimeString('en-US', options);
+        //console.log(month + "/" + day + "/" + year + " " + time);
+        
         var thumbnail = stories[j].multimedia["1"].url;
       } catch(e) {
         console.log(e.message);
@@ -239,10 +273,10 @@ class Results extends Component {
           </Media.Left>
           <Media.Body>
             <Media.Heading>{stories[j].title}</Media.Heading>
-            <p>{stories[j].url}</p>
             <p>{stories[j].byline}</p>
-            <p>{stories[j].published_date}</p>
+            <p>Published: {stories[j].published_date}</p>
             <p>{stories[j].abstract}</p>
+            <Button className="times-link-btn" href={stories[j].url}>Read at NYTimes.com</Button>
           </Media.Body>
         </Media>
       </Panel>
@@ -250,9 +284,22 @@ class Results extends Component {
       );
     }
     return(
-      <Col md={8}>
+      <Panel className="Results-panel" header="TOP STORIES">
         {storyCards}
-      </Col>
+      </Panel>
+      );
+  }
+}
+
+class Footer extends Component {
+  render() {
+    return(
+      <Grid>
+        <hr />
+        <footer>
+          <a href="https://www.linkedin.com/in/colbypainter">Created by: Colby Painter</a>
+        </footer>
+      </Grid>
       );
   }
 }
