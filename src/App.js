@@ -220,6 +220,7 @@ class Results extends Component {
     var searchInput = _.toLower(this.props.searchInput);
     // If there's any search input, use it to filter
     if (searchInput !== "") {
+      var searchCount = 0;
       for(var i=0; i < res.length; i++) {
         // Mash all the displayed attributes together into a string for comparison
         var resultString = (res[i].title + res[i].byline + res[i].abstract);
@@ -228,6 +229,7 @@ class Results extends Component {
         if(_.includes(resultString, searchInput)) {
           // Add matches to our filter array
           filteredRes.push(res[i]);
+          searchCount++;
         }
       }
     }

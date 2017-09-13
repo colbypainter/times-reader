@@ -20,6 +20,8 @@
 
 .container {
   max-width: 850px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .App-intro {
