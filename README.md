@@ -5,4 +5,4 @@ This app leverages the NYT Top Stories API to display stories from each section 
 
 Uses React and Bootstrap.
 
-![ScreenShot](./TimesReader.gif)
+![ScreenShot](./src/TimesReader.gif)
