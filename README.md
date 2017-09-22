@@ -5,4 +5,4 @@ This app leverages the NYT Top Stories API to display stories from each section 
 
 Uses React and Bootstrap.
 
-![ScreenShot](https://github.com/colbypainter/times-reader/src/TimesReader.gif)
+![ScreenShot](./TimesReader.gif)
