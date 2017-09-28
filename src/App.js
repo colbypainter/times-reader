@@ -230,7 +230,19 @@ class Results extends Component {
           // Add matches to our filter array
           filteredRes.push(res[i]);
           searchCount++;
-        } 
+        } else {
+          return(
+            <Panel className="Results-panel" header="TOP STORIES">
+            <Panel>
+              <Media>
+                <Media.Body>
+                  <Media.Heading>No Results Found</Media.Heading>
+                </Media.Body>
+              </Media>
+            </Panel>
+            </Panel>
+          );
+        }
       }
     }
     // Stories will hold either the unfiltered or filtered results
@@ -238,18 +250,6 @@ class Results extends Component {
     // If we filtered at all, use that set of results. Otherwise use the full set.
     if (filteredRes.length > 0) { 
       stories = filteredRes;
-    } else if(searchInput !== "") { 
-      return(
-        <Panel className="Results-panel" header="TOP STORIES">
-        <Panel>
-          <Media>
-            <Media.Body>
-              <Media.Heading>No Results Found</Media.Heading>
-            </Media.Body>
-          </Media>
-        </Panel>
-        </Panel>
-        );
     } else {
       stories = res;
     }
