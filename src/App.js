@@ -230,19 +230,7 @@ class Results extends Component {
           // Add matches to our filter array
           filteredRes.push(res[i]);
           searchCount++;
-        } else {
-          return(
-            <Panel className="Results-panel" header="TOP STORIES">
-            <Panel>
-              <Media>
-                <Media.Body>
-                  <Media.Heading>No Results Found</Media.Heading>
-                </Media.Body>
-              </Media>
-            </Panel>
-            </Panel>
-          );
-        }
+        } 
       }
     }
     // Stories will hold either the unfiltered or filtered results
@@ -258,6 +246,18 @@ class Results extends Component {
     var maxStories = 10;
     if (stories.length < 10) {
       maxStories = stories.length;
+    }
+    
+    if (stories.length === 0) {
+      return(
+        <Panel className="Results-panel" header="TOP STORIES">
+          <Media>
+            <Media.Body>
+              <Media.Heading>No results match your search. Sorry!</Media.Heading>
+            </Media.Body>
+          </Media>
+        </Panel>
+        );
     }
     for(var j=0; j < maxStories; j++) {
       try {
