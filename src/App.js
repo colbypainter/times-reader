@@ -236,7 +236,7 @@ class Results extends Component {
     // Stories will hold either the unfiltered or filtered results
     var stories;
     // If we filtered at all, use that set of results. Otherwise use the full set.
-    if (filteredRes.length > 0) { 
+    if (searchInput !== "") { 
       stories = filteredRes;
     } else {
       stories = res;
